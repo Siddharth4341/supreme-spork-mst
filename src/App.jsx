@@ -93,8 +93,7 @@ function App() {
     let x = Math.round(Math.random()*50)*8;
     let y = Math.random();
     let z = Math.round(Math.random()*7) + 1;
-    if(y < .5) return {"solution": 125*z*x, "qFormat": `${x} x ${125*z}`};
-    else if(y > .5) return {"solution": 125*z*x/10, "qFormat": `${x/10} x ${125*z}`};
+    return {"solution": 125*z*x, "qFormat": `${x} x ${125*z}`};
   }, [clicked]);
   let afterhundred = useMemo(function() {
     let x = Math.round(Math.random()*15);
@@ -116,7 +115,7 @@ function App() {
     return {"solution": x*y, "qFormat": `${x} x ${y}`};
   }, [clicked]);
   let squarefive = useMemo(function() {
-    let x = Math.round(Math.random()*150)+5;
+    let x = Math.round(Math.random()*15)*10+5;
     return {"solution": x**2, "qFormat": `${x}^2`};
   }, [clicked]);
   let fourtytofifty = useMemo(function() {
@@ -124,7 +123,7 @@ function App() {
     return {"solution": x**2, "qFormat": `${x}^2`};
   }, [clicked]);
   let distfromsquares = useMemo(function() {
-    let x = Math.round(Math.random()*20)*5;
+    let x = Math.round(Math.random()*90) + 10;
     let y = Math.round(Math.random()*4);
     let nums = [x-y, x+y];
     return {"solution": nums[0]*nums[1], "qFormat": `${nums[0]} x ${nums[1]}`};
@@ -242,6 +241,12 @@ function App() {
   let reciprocaladd = useMemo(function() {
     let x = Math.round(Math.random() * 9) + 1;
     let y = Math.round(Math.random() * 3) + 1;
+    function check() {
+      x = Math.round(Math.random() * 9) + 1;
+      y = Math.round(Math.random() * 3) + 1;
+      if(x == 0 || y == 0) check();
+    }
+    check();
     if(x < 5) y = x + y;
     else y = x - y;
     return {"solution": `2 ${((x-y)**2)}/${x*y}`, "qFormat": x + "/" + y + " + " + y + "/" + x + "(mixed number)"};
@@ -309,24 +314,32 @@ function App() {
     return {"solution": ((y-2)*x*(x+1-(y-4)))/2, "qFormat": `What is the ${x}th ${polygon} number`};
   }, [clicked]);
   let permutationcombination = useMemo(function() {
-    function factorial(a) {
-      let b = a;
-      for(let i = 0; i < b; i++) a *= a-i;
-      return a;
-    };
-    let x = Math.round(Math.random()*10);
-    let y = Math.round(Math.random()*2) + 1;
+    function factorial(n) {
+      let result = 1;
+      for (let i = 2; i <= n; i++) result *= i;
+      return result;
+    }
+    let x = Math.floor(Math.random() * 8) + 3;
+    let y = Math.floor(Math.random() * (x - 1)) + 1;
     let z = Math.random();
-    if(z < .5) return {"solution": factorial(x)/factorial(x-y), "qFormat": `How many permutations of ${y} characters be taken from ${x} total characters`};
-    else return {"solution": factorial(x)/(factorial(x-y)*factorial(y)), "qFormat": `How many combinations of ${y} characters be taken from ${x} total characters`}
+    if (z < 0.5) {
+      return {
+        solution: factorial(x) / factorial(x - y),
+        qFormat: `How many permutations of ${y} characters can be taken from ${x} total characters?`
+      };
+    }
+    return {
+      solution: factorial(x) / (factorial(y) * factorial(x - y)),
+      qFormat: `How many combinations of ${y} characters can be taken from ${x} total characters?`
+    }
   }, [clicked]);
   let parabolaaxisyvertex = useMemo(function() {
     let a = Math.round(Math.random()*5) + 1;
     let b = Math.round(Math.random()*5) + 1;
     let c = Math.round(Math.random()*5) + 1;
     let y = Math.random();
-    if(y<.5) return {"solution": (0-b)/(a*2), "qFormat": `What is the axis of symmetry of ${a}x^2 + ${b}x + ${c}`};
-    else return {"solution": a*((0-b)/(a*2)) + b*((0-b)/(a*2)) + c, "qFormat": `If the vertex of ${a}x^2 + ${b}x + ${c} is (h,k), what is k?`};
+    if(y<.5) return {"solution": (0-b)/(a*2), "qFormat": `What is the axis of symmetry of ${a}x^2 + ${b}x + ${c} (decimal)`};
+    else return {"solution": a*((0-b)/(a*2)) + b*((0-b)/(a*2)) + c, "qFormat": `If the vertex of ${a}x^2 + ${b}x + ${c} is (h,k), what is k? (decimal)`};
   }, [clicked]);
   let sumproductofroots = useMemo(function() {
     let a = Math.round(Math.random()*9) + 1;
@@ -335,16 +348,21 @@ function App() {
     let y = Math.random();
     if(y<.5) return {"solution": (0-b)/a, "qFormat": `What is the sum of the roots to the equation: ${a}x^2 + ${b}x + ${c}`};
     else return {"solution": c/a, "qFormat": `What is the product of the roots to the equation: ${a}x^2 + ${b}x + ${c}`};
-  });
-  
+  }, [clicked]);
+  let unitsdigit = useMemo(function() {
+    let x = Math.round(Math.random()*19) + 1;
+    let y = Math.round(Math.random()*8) + 2;
+    return {"solution": parseInt((y^x).toString().split("").slice((y^x).toString().split("").length-1, 1)), "qFormat": `What is the units digit of ${y}^${x}`};
+  }, [clicked]);
   let arr = [oneoneone, twelve, eleven, foil, onezeroone, twofive, sevenfive, fifty, onetwofive, afterhundred, belowhundred, nearhundred,
   squarefive, fourtytofifty, distfromsquares, squarefactor, diffsquares, twonumsendfive, mixednumsumone, axaoverb, remaindertwofoureight,
   remainderthreenine, remaindereleven, remainderother, remainderexpression, aoverfourty, subtractreverses, oneoveroneplusone, reciprocaladd,
   squares, cubes, powtwo, powthreefive, firstnums, firstnums, firstodds, firstevens, firstcubes, alternatingsquares, numberofdiagonals,
-  polygonalnumbers, permutationcombination, parabolaaxisyvertex, sumproductofroots
+  polygonalnumbers, permutationcombination, parabolaaxisyvertex, sumproductofroots, unitsdigit
   ];
   //answer check thing softwear
   const checkAns = function() {
+    console.log([arr[rand].qFormat, rand]);
     if (ans == arr[rand].solution) {
       setQPer([qPer[0] + 1, qPer[1] + 1]);
     } else {
