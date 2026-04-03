@@ -95,6 +95,7 @@ function App() {
     let z = Math.round(Math.random()*7) + 1;
     return {"solution": 125*z*x, "qFormat": `${x} x ${125*z}`};
   }, [clicked]);
+  //10th trick
   let afterhundred = useMemo(function() {
     let x = Math.round(Math.random()*15);
     let y = Math.round(Math.random()*15);
@@ -162,6 +163,7 @@ function App() {
     if(Number.isInteger((x*y+z)/y) * ((x*y+y-z)/y)) return {"solution": ((x*y+z)/y) * ((x*y+y-z)/y), "qFormat": `${x} ${z}/${y} x ${x} ${y-z}/${y}`};
     else return {"solution": `${x*x+x} ${z*(y-z)}/${y*y}`, "qFormat": `${x} ${z}/${y} x ${x} ${y-z}/${y}`};
   }, [clicked]);
+  //20th trick
   let axaoverb = useMemo(function() {
     let impArr = [7, 9, 11, 13, 17, 23];
     let a = Math.round(Math.random()*(impArr.length-1));
@@ -192,15 +194,6 @@ function App() {
     let x = Math.round(Math.random()*100000);
     return {"solution": x%11, "qFormat": `What is the remainder of ${x} divided by 11`};
   }, [clicked]);
-  let remainderother = useMemo(function() {
-    let x = Math.round(Math.random()*10000);
-    let nums = [2, 4, 8, 3, 9];
-    let y = Math.round(Math.random()*4);
-    let z = Math.round(Math.random()*3);
-    let a = nums.splice(y, 1);
-    let b = nums.splice(z, 1);
-    return {"solution": x%(a*b), "qFormat": `What is the remainder of ${x} divided by ${a*b}`};
-  }, [clicked]);
   let remainderexpression = useMemo(function() {
     let x = Math.round(Math.random()*7) + 1;
     let y = [];
@@ -226,23 +219,11 @@ function App() {
     y = parseInt(y);
     return {"solution": x - y, "qFormat": x.toString() + " - " + y.toString()};
   }, [clicked]);
-  let oneoveroneplusone = useMemo(function() {
-    let len = Math.round(Math.random()*3) + 3;
-    let x = Math.round(Math.random()*4) + 1;
-    let demArr = [];
-    for(let i = 0; i < len; i++) {
-      demArr.push((x+i)*(x+i+1));
-    }
-    demArr = demArr.map(val =>  1/val);
-    const solution =  demArr.reduce((a, b) => a + b, 0);
-    demArr = demArr.map(val => val.toString());
-    return {"solution": solution, "qFormat": `What is the sum of ` + demArr.join(" + ")};
-  }, [clicked]);
   let reciprocaladd = useMemo(function() {
-    let x = Math.round(Math.random() * 9) + 1;
+    let x = Math.round(Math.random() * 6) + 4;
     let y = Math.round(Math.random() * 3) + 1;
     function check() {
-      x = Math.round(Math.random() * 9) + 1;
+      x = Math.round(Math.random() * 6) + 4;
       y = Math.round(Math.random() * 3) + 1;
       if(x == 0 || y == 0) check();
     }
@@ -352,16 +333,237 @@ function App() {
   let unitsdigit = useMemo(function() {
     let x = Math.round(Math.random()*19) + 1;
     let y = Math.round(Math.random()*8) + 2;
-    return {"solution": parseInt((y^x).toString().split("").slice((y^x).toString().split("").length-1, 1)), "qFormat": `What is the units digit of ${y}^${x}`};
+    return {"solution": y**x%10, "qFormat": `What is the units digit of ${y}^${x}`};
+  }, [clicked]);
+  let fourdadd = useMemo(function() {
+    let x = Math.round(Math.random()*4000) + 999;
+    let y = Math.round(Math.random()*4000) + 999;
+    return {"solution": x+y, "qFormat": x.toString() + " + " + y.toString()};
+  }, [clicked]);
+  let threedsub = useMemo(function() {
+    let x = Math.round(Math.random()*2000) + 500;
+    let y = x - Math.round(Math.random()*500);
+    return {"solution": x-y, "qFormat": x.toString() + " - " + y.toString()};
+  }, [clicked]);
+  let percenttofraction = useMemo(function() {
+    let hundredfactors = [100, 50, 25, 20, 10, 5, 4, 2];
+    let x = Math.round(Math.random()*98) + 2;
+    let demoninator = 100;
+    hundredfactors.forEach((factor) => {
+      if(x%factor == 0) {x /= factor; demoninator /= factor};
+    });
+    return {"solution": x.toString() + "/" + demoninator.toString(), "qFormat": x.toString() + `% (fraction)`};
+  }, [clicked]);
+  let mixednumtodecimal = useMemo(function() {
+    let x = Math.round(Math.random()*5) + 1;
+    let z = Math.round(Math.random()*23) + 1;
+    let y = Math.random() > .5? [Math.round(Math.random()*6) + 1, 8] : z%5 == 0? [(z + 1), 25] : [z, 25];
+    return {"solution": x + y[0]/y[1], "qFormat": `${x} ${y[0]}/${y[1]} (decimal)`}; 
+  }, [clicked]);
+  let axbaxc = useMemo(function() {
+    let x = Math.round(Math.random()*19) + 11;
+    let y = (Math.round(Math.random())+2)*10;
+    let a = y - Math.round(Math.random()*10);
+    let b = y - a;
+    return {"solution": x*a+x*b, "qFormat": x.toString() + " x " + a.toString() + " + " + x.toString() + " x " + b.toString()};
+  }, [clicked]);
+  let sametensumones = useMemo(function() {
+    let x = (Math.round(Math.random()*8) + 1)*10;
+    let y = 10-(Math.round(Math.random()*8) + 1);
+    let z = 10 - y;
+    let a = x + y;
+    let b = x + z;
+    return {"solution": a*b, "qFormat": a.toString() + " x " + b.toString()};
+  }, [clicked]);
+  let sameonessumtens = useMemo(function() {
+    let x = Math.round(Math.random()*8) + 1;
+    let y = Math.round(Math.random()*8) + 1;
+    let z = 10-y;
+    y *= 10;
+    z *= 10;
+    let a = y + x;
+    let b = z + x;
+    return {"solution": a*b, "qFormat": a.toString() + " x " + b.toString()};
+  }, [clicked]);
+  let percentaddition = useMemo(function() {
+    let x = (Math.round(Math.random() * 8) + 1)*10;
+    let y = (Math.round(Math.random() * 8) + 1)*10;
+    let z = parseInt((x*y/100).toString().split(""));
+    z = z[1];
+    return {"solution": x*y/100-z, "qFormat": `What is ${y}% of ${x} minus ${z}`};
+  }, [clicked]);
+  let complementary = useMemo(function() {
+    let x = Math.round(Math.random()*88) + 1;
+    return {"solution": 90-x, "qFormat": `What is the measure of the angle complementary to ${x}`};
+  }, [clicked]);
+  let supplementary = useMemo(function() {
+    let x = Math.round(Math.random()*178) + 1;
+    return {"solution": 180-x, "qFormat": `What is the measure of the angle supplementary to ${x}`};
+  }, [clicked]);
+  let absvaladd = useMemo(function() {
+    let a = Math.round(Math.random()*40) - 20;
+    let b = Math.round(Math.random()*40) - 20;
+    let c = Math.round(Math.random()*40) - 20;
+    let d = Math.round(Math.random()*40) - 20;
+    return {"solution": Math.abs(a-b) + Math.abs(c-d), "qFormat": `|${a} - ${b}| + |${c} - ${d}|`};
+  }, [clicked]);
+  let pythag = useMemo(function() {
+    let triples = [[3, 4, 5], [5, 12, 13], [8, 15, 17]];
+    let x = triples[Math.round(Math.random()*2)];
+    let y = Math.round(Math.random()*2) + 1;
+    x = x.map(val => val*y);
+    let z = Math.round(Math.random()*2) + 1;
+    if(z == 1 || z == 0) {
+      x.splice(z, 1);
+      let a = Math.random();
+      if(a < .5) return {"solution": x[1]**2 - x[0]**2, "qFormat": `If ${x[0]} and k are legs of a triangle, and ${x[1]} is the hypotenuse, what is k^2?`};
+      else return {"solution": (x[1]**2 - x[0]**2)**0.5, "qFormat": `If ${x[0]} and k are legs of a triangle, and ${x[1]} is the hypotenuse, what is k?`};
+    }
+    else {
+      x.splice(2, 1);
+      let a = Math.random();
+      if(a < .5) return {"solution": x[1]**2 + x[0]**2, "qFormat": `If ${x[0]} and ${x[1]} are legs of a triangle, and k is the hypotenuse, what is k^2?`};
+      else return {"solution": (x[1]**2 + x[0]**2)**0.5, "qFormat": `If ${x[0]} and ${x[1]} are legs of a triangle, and k is the hypotenuse, what is k?`};
+    }
+  }, [clicked]);
+  let quadratic = useMemo(function() {
+    let a = Math.round(Math.random()*2) + 1;
+    let b = Math.round(Math.random()*5) + 1;
+    let c = Math.round(Math.random()*9) + 1;
+    let x = (Math.round(Math.random()*20) + 10)/10;
+    return {"solution": a*x**2 + b*x + c, "qFormat": `Given f(x) = ${a}x^2 + ${b}x + ${c}, find f(${x})`};
+  }, [clicked]);
+  let onefourtythree = useMemo(function() {
+    let x = Math.round(Math.random()*14)*7;
+    let y = Math.round(Math.random()*2) + 1;
+    return {"solution": x*y*143, "qFormat": `${x} x ${y*143}`};
+  }, [clicked]);
+  let baseaddsubmult = useMemo(function() {
+  let base = Math.round(Math.random() * 7) + 2;
+  let x_dec = Math.round(Math.random() * 20); 
+  let y_dec = Math.round(Math.random() * 20);
+  let signs = ["+", "-", "x"];
+  let sign = signs[Math.floor(Math.random() * 3)];
+  let sol_dec = (sign === "+") ? x_dec + y_dec : (sign === "-") ? x_dec - y_dec : x_dec * y_dec;
+  function basify(num) {
+    if (num < 0) return "-" + basify(Math.abs(num));
+    return parseInt(num.toString(base));
+  }
+  return { "solution": basify(sol_dec), "qFormat": `${basify(x_dec)} ${sign} ${basify(y_dec)} (base ${base})` };
+}, [clicked]);
+  let means = useMemo(function() {
+    let pmean = Math.round(Math.random()*10) + 10;
+    let x = pmean - (Math.round(Math.random()*10)-5);
+    let y = pmean - (Math.round(Math.random()*10)-5);
+    let z = pmean*3-x-y;
+    return {"solution": z, "qFormat": `The mean of three numbers, ${x}, ${y}, and x is ${pmean}, find x`};
+  }, [clicked]);
+  let mphtofps = useMemo(function() {
+    let mph = Math.round(Math.random()*6)*15;
+    let fps = mph/15*22;
+    return {"solution": fps, "qFormat": `${mph} miles/hr = ______ ft/sec`};
+  }, [clicked]);
+  let ftoc = useMemo(function() {
+    let f = (Math.round(Math.random() * 20) * 9) + 32; // Ensures an integer result
+    return { "solution": (f - 32) * 5/9, "qFormat": `${f} degrees F is _____ degrees C` };
+  }, [clicked]);
+  let basetotwo = useMemo(function() {
+    let y = Math.random();
+    let x = [y>.5? Math.round(Math.random()*2) + 1 : Math.round(Math.random()*6) + 1, y>.5? Math.round(Math.random()*2) + 1 : Math.round(Math.random()*6) + 1, y>.5? Math.round(Math.random()*2) + 1 : Math.round(Math.random()*6) + 1];
+    let z = x.map((val) => {
+      let sval = val;
+      let nval = 0;
+      for(let i = 3; i >= 0; i--) {
+        nval += Math.floor((sval/2**i)*10**i);
+        sval = sval%2**i;
+      }
+      return nval.toString();
+    });
+    z = z.join("");
+    x = x.map((val) => {return val.toString()});
+    x = x.join("");
+    return {"solution": z, "qFormat": `What is ${x}(base ${y>.5? "4" : "8"}) in base 2`};
+  }, [clicked]);
+  let sumabs = useMemo(function() {
+    let x = Math.round(Math.random()*3) + 1;
+    let y = (Math.round(Math.random()*2)+1)*x;
+    let z = (Math.round(Math.random()*2)+1)*y;
+    let sign = Math.random()>.5? "+" : "-";
+    let nsign = sign == "+"? 1 : -1;
+    let solutions = [];
+    for(let i = -40; i <= 40; i++) {
+      if(Math.abs(x*i+y*nsign) == z) solutions.push(i);
+    }
+    return {"solution": solutions[0] + solutions[1], "qFormat": `What is the sum of the solutions to |${x}x ${sign} ${y}| = ${z}`};
+  }, [clicked]);
+  let consecutive = useMemo(function() {
+    let x = Math.round(Math.random())*69+1;
+    let y = Math.random();
+    if(y < .5) return {"solution": x, "qFormat": `What is the smallest of three consecutive integers if they sum to ${3*x+3}`};
+    else {
+      if(x%2 == 0) return {"solution": x, "qFormat": `What is the smallest of three consecutive even integers if they sum to ${3*x+6}`};
+      else return {"solution": x, "qFormat": `What is the smallest of three consecutive odd integers if they sum to ${3*x+6}`};
+    }
+  }, [clicked]);
+  let fib = useMemo(function() {
+    let sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
+    let x = Math.round(Math.random()*10) + 1;
+    return {"solution": sequence[x-1], "qFormat": `What is the ${x}th term of the Fibonacci sequence that starts with 0, 1, 1`};
+  }, [clicked]);
+  let threeseven = useMemo(function() {
+    let x = (Math.round(Math.random()*3) + 1)*111;
+    let y = Math.round(Math.random()*3) + 1;
+    return {"solution": x/37*y, "qFormat": `${x} x ${y}/37`};
+  }, [clicked]);
+  let twoseven = useMemo(function() {
+    let x = (Math.round(Math.random()*3) + 1)*111;
+    let y = Math.round(Math.random()*3) + 1;
+    let whole = 4*x/111*y;
+    let fraction = x/111*y;
+    whole += Math.floor(fraction/9);
+    fraction = fraction%9;
+    return {"solution": `${whole} ${fraction}/27`, "qFormat": `${x} x ${y}/27`};
+  }, [clicked]);
+  let basebtoten = useMemo(function() {
+    let base = Math.round(Math.random()*9) + 2;
+    if(base == 10) base -= Math.round(Math.random()*7) + 1;
+    let digits = [Math.round(Math.random()*base) + 1, Math.round(Math.random()*base) + 1, Math.round(Math.random()*base) + 1];
+    if(base <= 5) digits.push(Math.round(Math.random()*base) + 1);
+    let solution = 0;
+    digits.forEach((val, index) => {
+      solution += val*(base**(digits.length-index));
+    });
+    digits = digits.map(val => val.toString());
+    digits = parseInt(digits.join(""));
+    return {"solution": solution, "qFormat": `What is ${digits}(base ${base}) in base 10`};
+  }, [clicked]);
+  let areaofcircleeq = useMemo(function() {
+    let x = (Math.round(Math.random()*99)+1)**2;
+    return {"solution": x, "qFormat": `What is the area of the figure with the equation (x - ${Math.round(Math.random()*10)})^2 + (y + ${Math.round(Math.random()*10)})^2 = ${x} in terms of pi`};
+  }, [clicked]);
+  let squarediagonal = useMemo(function() {
+    let x = (Math.round(Math.random()*6) + 4)*2;
+    return {"solution": (x**(1/2)/2**(1/2))**2, "qFormat": `What is the area of a square given sqrt(${x}) is the diagonal`};
+  }, [clicked]);
+  let ezdivision = useMemo(function() {
+    let x = Math.round(Math.random()*3) + 5;
+    let digits = [x*(Math.round(Math.random()*3)+1), x*(Math.round(Math.random()*3)+1), x*(Math.round(Math.random()*3)+1)];
+    digits = digits.map((val) => val.toString());
+    digits = parseInt(digits.join(""));
+    return {"solution": digits/x, "qFormat": `${digits}/${x}`};
   }, [clicked]);
   let arr = [oneoneone, twelve, eleven, foil, onezeroone, twofive, sevenfive, fifty, onetwofive, afterhundred, belowhundred, nearhundred,
   squarefive, fourtytofifty, distfromsquares, squarefactor, diffsquares, twonumsendfive, mixednumsumone, axaoverb, remaindertwofoureight,
-  remainderthreenine, remaindereleven, remainderother, remainderexpression, aoverfourty, subtractreverses, oneoveroneplusone, reciprocaladd,
-  squares, cubes, powtwo, powthreefive, firstnums, firstnums, firstodds, firstevens, firstcubes, alternatingsquares, numberofdiagonals,
-  polygonalnumbers, permutationcombination, parabolaaxisyvertex, sumproductofroots, unitsdigit
+  remainderthreenine, remaindereleven, remainderexpression, aoverfourty, subtractreverses, reciprocaladd, squares, cubes, powtwo, 
+  powthreefive, firstnums, firstodds, firstevens, firstcubes, alternatingsquares, numberofdiagonals, polygonalnumbers, 
+  permutationcombination, parabolaaxisyvertex, sumproductofroots, unitsdigit, fourdadd, threedsub, percenttofraction,
+  mixednumtodecimal, axbaxc, sametensumones, sameonessumtens, percentaddition, complementary, supplementary, absvaladd, pythag, quadratic,
+  onefourtythree, baseaddsubmult, means, mphtofps, ftoc, basetotwo, sumabs, consecutive, fib, threeseven, twoseven, basebtoten,
+  areaofcircleeq, squarediagonal, ezdivision
   ];
   //answer check thing softwear
   const checkAns = function() {
+    console.log(rand);
     console.log([arr[rand].qFormat, rand]);
     if (ans == arr[rand].solution) {
       setQPer([qPer[0] + 1, qPer[1] + 1]);
